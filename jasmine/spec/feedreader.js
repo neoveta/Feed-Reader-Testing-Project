@@ -20,14 +20,14 @@ $(function() {
             for(let feed of allFeeds){
                 expect(feed.url).toBeDefined();     //feed has a URL
                 expect(feed.url.length).not.toBe(0);    //feed url not empty
-            };
+            }
         });
 
         it('names are defined', function(){
             for(let feed of allFeeds){
                 expect(feed.name).toBeDefined();   //feed has name
                 expect(feed.name.length).not.toBe(0);  //feeds name is not empty
-            };
+            }
         });
     });
 
@@ -35,7 +35,7 @@ $(function() {
 
         it('menu is hidden', function(){
             const body = document.querySelector('body');
-            expect(body.classList.contains('menu-hidden')).toBe(true);   //menu is hidden by default
+            expect($('body').hasClass('menu-hidden')).toBe(true);   //menu is hidden by default
         });
 
         it('toggles on and off', function(){
@@ -43,9 +43,9 @@ $(function() {
             const menu = document.querySelector('a.menu-icon-link');
 
             menu.click(); //show menu
-            expect(body.classList.contains('menu-hidden')).toBe(false); 
+            expect($('body').hasClass('menu-hidden')).toBe(false); 
             menu.click(); //hide menu
-            expect(body.classList.contains('menu-hidden')).toBe(true);
+            expect($('body').hasClass('menu-hidden')).toBe(true);
         });
     });
 
@@ -55,11 +55,10 @@ $(function() {
                 done();
             });
         });    
-
-         it('feed has at least 1 entry', function() {       // tests that there is at least one entry in feed.
-            const entryNumber = $('.entry').length;
-            expect(entryNumber).toBeGreaterThan(0);
-         });   
+         
+        it('feed has at least 1 entry', function() {        // tests that there is at least one entry in feed.
+            expect($('.feed .entry').length).toBeGreaterThan(0);
+        });
     }); 
  
     describe('New Feed Selection', function(){
@@ -69,9 +68,9 @@ $(function() {
             loadFeed(0, function () {
                 defaultFeed = $('.feed').html();  
     
-            loadFeed(1, function () {
-                updatedFeed = $('.feed').html(); 
-                done();
+                loadFeed(1, function () {
+                    updatedFeed = $('.feed').html(); 
+                    done();
                 });
             });
         });
