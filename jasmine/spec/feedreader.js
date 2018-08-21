@@ -51,29 +51,27 @@ $(function() {
 
     describe('Initial Entries', function (){
         beforeEach(function(done){           // beforeEach allows for use of asynchronous loadFeed()
-            loadFeed(0, done);
+            loadFeed(0, function (){
+                done();
+            });
         });    
-        it('work completes', function(){
-            const feed = document.querySelector('.feed');
-            expect(feed.children.length).toBeGreaterThan(0);
-        });
 
-         it('entry presents', function() {       // tests that there is at least one entry in feed.
-            const entry = document.querySelector('.entry');
-            expect(entry.children.length).toBeGreaterThan(0);
+         it('feed has at least 1 entry', function() {       // tests that there is at least one entry in feed.
+            const entryNumber = $('.entry').length;
+            expect(entryNumber).toBeGreaterThan(0);
          });   
-    });
+    }); 
  
     describe('New Feed Selection', function(){
         let defaultFeed, updatedFeed;
 
         beforeEach(function (done) {
             loadFeed(0, function () {
-                defaultFeed = $('.feed').text();
+                defaultFeed = $('.feed').html();  
     
-                loadFeed(1, function () {
-                    updatedFeed = $('.feed').text();
-                    done();
+            loadFeed(1, function () {
+                updatedFeed = $('.feed').html(); 
+                done();
                 });
             });
         });
