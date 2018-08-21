@@ -20,14 +20,14 @@ $(function() {
             for(let feed of allFeeds){
                 expect(feed.url).toBeDefined();     //feed has a URL
                 expect(feed.url.length).not.toBe(0);    //feed url not empty
-            }
+            };
         });
 
         it('names are defined', function(){
             for(let feed of allFeeds){
                 expect(feed.name).toBeDefined();   //feed has name
                 expect(feed.name.length).not.toBe(0);  //feeds name is not empty
-            }
+            };
         });
     });
 
@@ -50,32 +50,36 @@ $(function() {
     });
 
     describe('Initial Entries', function (){
-        beforeEach(function(done){
+        beforeEach(function(done){           // beforeEach allows for use of asynchronous loadFeed()
             loadFeed(0, done);
         });    
         it('work completes', function(){
             const feed = document.querySelector('.feed');
-            expect(feed.children.length > 0).toBe(true);
+            expect(feed.children.length).toBeGreaterThan(0);
         });
+
+         it('entry presents', function() {       // tests that there is at least one entry in feed.
+            const entry = document.querySelector('.entry');
+            expect(entry.children.length).toBeGreaterThan(0);
+         });   
     });
  
     describe('New Feed Selection', function(){
-        const feed = document.querySelector('.feed');
-        const feedFirst = [];       //storing the first feed content into array
+        let defaultFeed, updatedFeed;
 
-        beforeEach(function(done){
-            loadFeed(0);
-            Array.from(feed.children).forEach(function(entry){  //loop throught each feed's children element
-                feedFirst.push(entry.innerText);  
+        beforeEach(function (done) {
+            loadFeed(0, function () {
+                defaultFeed = $('.feed').text();
+    
+                loadFeed(1, function () {
+                    updatedFeed = $('.feed').text();
+                    done();
+                });
             });
-            loadFeed(1,done);
-        }); 
-        it('content changes', function(){
-            Array.from(feed.children).forEach(function(entry, index){ 
-                expect(entry.innerText === feedFirst[index]).toBe(false);
-
-            });   
-        }); 
+        });
+    
+        it('loads a new feed, content changed', function () {
+            expect(updatedFeed).not.toBe(defaultFeed);    // checks if the variables are different. if yes - the content changed
+        });
     });
-
 }());
